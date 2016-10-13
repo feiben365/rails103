@@ -1,5 +1,5 @@
 class GroupsController < ApplicationController
-  before_action :authenticate_user!, only:[:new :create]
+  before_action :authenticate_user! , only: [:new, :create]
   def index
     @groups = Group.all
   end
@@ -11,7 +11,7 @@ class GroupsController < ApplicationController
       redirect_to groups_path
     else
       render :new
-    end 
+    end
   end
 
   def show
@@ -23,14 +23,15 @@ class GroupsController < ApplicationController
   end
 
   def create
-    @group = Group.new(group_params)
+     @group = Group.new(group_params)
+     @group.user = current_user
 
-    if @group.save
-     redirect_to groups_path
-   else
-     render :new
+     if @group.save
+       redirect_to groups_path
+     else
+       render :new
+     end
    end
-  end
 
   def update
     @group = Group.find(params[:id])
